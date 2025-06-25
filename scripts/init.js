@@ -165,7 +165,7 @@ function addShellAliases() {
 
 		// Check if aliases already exist
 		const configContent = fs.readFileSync(shellConfigFile, 'utf8');
-		if (configContent.includes("alias tm='task-master'")) {
+		if (configContent.includes("alias tm='node scripts/dev.js'")) {
 			log('info', 'Task Master aliases already exist in shell config.');
 			return true;
 		}
@@ -173,8 +173,8 @@ function addShellAliases() {
 		// Add aliases to the shell config file
 		const aliasBlock = `
 # Task Master aliases added on ${new Date().toLocaleDateString()}
-alias tm='task-master'
-alias taskmaster='task-master'
+alias tm='node scripts/dev.js'
+alias taskmaster='node scripts/dev.js'
 `;
 
 		fs.appendFileSync(shellConfigFile, aliasBlock);
@@ -361,12 +361,12 @@ async function initializeProject(options = {}) {
 		);
 		selectedRuleProfiles = options.rules;
 	} else if (skipPrompts) {
-		// If non-interactive (e.g., --yes) and no rules specified, default to ALL.
+		// If non-interactive (e.g., --yes) and no rules specified, default to CURSOR and ROO only.
 		log(
 			'info',
-			`No rules specified in non-interactive mode, defaulting to all profiles.`
+			`No rules specified in non-interactive mode, defaulting to cursor and roo profiles only.`
 		);
-		selectedRuleProfiles = RULE_PROFILES;
+		selectedRuleProfiles = ['cursor', 'roo'];
 	} else {
 		// If interactive and no rules specified, default to NONE.
 		// The 'rules --setup' wizard will handle selection.

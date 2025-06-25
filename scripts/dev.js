@@ -16,6 +16,14 @@ if (process.env.DEBUG === '1') {
 	console.error('DEBUG - dev.js received args:', process.argv.slice(2));
 }
 
+// --- MCP SERVER SUBCOMMAND SUPPORT ---
+if (process.argv[2] === 'mcp-server') {
+  await import('../mcp-server/server.js');
+  // Prevent further CLI logic from running; keep the process alive
+  await new Promise(() => {});
+}
+// --- END MCP SERVER SUBCOMMAND SUPPORT ---
+
 import { runCLI } from './modules/commands.js';
 
 // Run the CLI with the process arguments
